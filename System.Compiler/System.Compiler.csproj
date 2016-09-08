@@ -1,0 +1,271 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <!--<Import Project="..\Microsoft.Research\Common.CodeContracts.props" />-->
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D7E16B38-3893-4EEF-847F-A3BE807E9546}</ProjectGuid>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>System.Compiler</AssemblyName>
+    <AssemblyOriginatorKeyFile>..\Common\InterimKey.snk</AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>System.Compiler</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <SignAssembly>true</SignAssembly>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+    <CodeContractsAssemblyMode>0</CodeContractsAssemblyMode>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <UseCodeContracts>true</UseCodeContracts>
+    <DefineConstants>TRACE;DEBUG;WHIDBEY;WHIDBEYwithGenericsAndIEqualityComparer;AllowCsharpConstructorSyntax;ILOFFSETS;NoData;NoRuntimeXml;CodeContracts;CLOUSOT</DefineConstants>
+    <BaseAddress>0</BaseAddress>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Debug\System.Compiler.xml</DocumentationFile>
+    <NoWarn>1591;1699</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>Sdl7.0.ruleset</CodeAnalysisRuleSet>
+    <CodeContractsEnableRuntimeChecking>False</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
+    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
+    <CodeContractsRuntimeSkipQuantifiers>False</CodeContractsRuntimeSkipQuantifiers>
+    <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
+    <CodeContractsNonNullObligations>True</CodeContractsNonNullObligations>
+    <CodeContractsBoundsObligations>True</CodeContractsBoundsObligations>
+    <CodeContractsArithmeticObligations>True</CodeContractsArithmeticObligations>
+    <CodeContractsEnumObligations>True</CodeContractsEnumObligations>
+    <CodeContractsRedundantAssumptions>True</CodeContractsRedundantAssumptions>
+    <CodeContractsAssertsToContractsCheckBox>True</CodeContractsAssertsToContractsCheckBox>
+    <CodeContractsRedundantTests>True</CodeContractsRedundantTests>
+    <CodeContractsMissingPublicRequiresAsWarnings>True</CodeContractsMissingPublicRequiresAsWarnings>
+    <CodeContractsMissingPublicEnsuresAsWarnings>False</CodeContractsMissingPublicEnsuresAsWarnings>
+    <CodeContractsInferRequires>True</CodeContractsInferRequires>
+    <CodeContractsInferEnsures>False</CodeContractsInferEnsures>
+    <CodeContractsInferObjectInvariants>False</CodeContractsInferObjectInvariants>
+    <CodeContractsSuggestAssumptions>False</CodeContractsSuggestAssumptions>
+    <CodeContractsSuggestAssumptionsForCallees>False</CodeContractsSuggestAssumptionsForCallees>
+    <CodeContractsSuggestRequires>False</CodeContractsSuggestRequires>
+    <CodeContractsNecessaryEnsures>True</CodeContractsNecessaryEnsures>
+    <CodeContractsSuggestObjectInvariants>False</CodeContractsSuggestObjectInvariants>
+    <CodeContractsSuggestReadonly>True</CodeContractsSuggestReadonly>
+    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
+    <CodeContractsShowSquigglies>True</CodeContractsShowSquigglies>
+    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
+    <CodeContractsEmitXMLDocs>False</CodeContractsEmitXMLDocs>
+    <CodeContractsCustomRewriterAssembly />
+    <CodeContractsCustomRewriterClass />
+    <CodeContractsLibPaths />
+    <CodeContractsExtraRewriteOptions />
+    <CodeContractsExtraAnalysisOptions />
+    <CodeContractsSQLServerOption />
+    <CodeContractsBaseLineFile />
+    <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
+    <CodeContractsSkipAnalysisIfCannotConnectToCache>False</CodeContractsSkipAnalysisIfCannotConnectToCache>
+    <CodeContractsFailBuildOnWarnings>False</CodeContractsFailBuildOnWarnings>
+    <CodeContractsBeingOptimisticOnExternal>True</CodeContractsBeingOptimisticOnExternal>
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+    <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
+    <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Common\Include\version.cs">
+      <Link>version.cs</Link>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AssemblyCache.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Comparer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DoubleVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Duplicator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExceptionStrings.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FastFileIO.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="ILGenerator.cs" />
+    <Compile Include="Inspector.cs" />
+    <Compile Include="ListTemplate.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MemoryMappedFile.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Metadata.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Nodes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OpCode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PDBreaderWriter\BitAccess.cs" />
+    <Compile Include="PDBreaderWriter\BitSet.cs" />
+    <Compile Include="PDBreaderWriter\CvInfo.cs" />
+    <Compile Include="PDBreaderWriter\DataStream.cs" />
+    <Compile Include="PDBreaderWriter\DbiDbgHdr.cs" />
+    <Compile Include="PDBreaderWriter\DbiHeader.cs" />
+    <Compile Include="PDBreaderWriter\DbiModuleInfo.cs" />
+    <Compile Include="PDBreaderWriter\DbiSecCon.cs" />
+    <None Include="PDBreaderWriter\DumpMisc.cs" />
+    <Compile Include="PDBreaderWriter\IntHashTable.cs" />
+    <None Include="PDBreaderWriter\LineInfo.cs" />
+    <Compile Include="PDBreaderWriter\MsfDirectory.cs" />
+    <Compile Include="PDBreaderWriter\PdbDebugException.cs" />
+    <Compile Include="PDBreaderWriter\PdbException.cs" />
+    <Compile Include="PDBreaderWriter\PdbFile.cs" />
+    <Compile Include="PDBreaderWriter\PdbFileHeader.cs" />
+    <Compile Include="PDBreaderWriter\PdbFunction.cs" />
+    <Compile Include="PDBreaderWriter\PdbLine.cs" />
+    <Compile Include="PDBreaderWriter\PdbLines.cs" />
+    <Compile Include="PDBreaderWriter\PdbReader.cs" />
+    <Compile Include="PDBreaderWriter\PdbScope.cs" />
+    <Compile Include="PDBreaderWriter\PdbSlot.cs" />
+    <Compile Include="PDBreaderWriter\PdbSource.cs" />
+    <Compile Include="PDBreaderWriter\PdbWriter.cs" />
+    <Compile Include="PDBreader\BitAccess.cs" />
+    <Compile Include="PDBreader\BitSet.cs" />
+    <Compile Include="PDBreader\CCIAdaptors.cs" />
+    <Compile Include="PDBreader\CvInfo.cs" />
+    <Compile Include="PDBreader\DataStream.cs" />
+    <Compile Include="PDBreader\DbiDbgHdr.cs" />
+    <Compile Include="PDBreader\DbiHeader.cs" />
+    <Compile Include="PDBreader\DbiModuleInfo.cs" />
+    <Compile Include="PDBreader\DbiSecCon.cs" />
+    <Compile Include="PDBreader\IntHashTable.cs" />
+    <Compile Include="PDBreader\MsfDirectory.cs" />
+    <Compile Include="PDBreader\PdbConstant.cs" />
+    <Compile Include="PDBreader\PdbDebugException.cs" />
+    <Compile Include="PDBreader\PdbFile.cs" />
+    <Compile Include="PDBreader\PdbFileHeader.cs" />
+    <Compile Include="PDBreader\PdbFunction.cs" />
+    <Compile Include="PDBreader\PdbInfo.cs" />
+    <Compile Include="PDBreader\PdbLines.cs" />
+    <Compile Include="PDBreader\PdbReader.cs" />
+    <Compile Include="PDBreader\PdbScope.cs" />
+    <Compile Include="PDBreader\PdbSlot.cs" />
+    <Compile Include="PDBreader\PdbSource.cs" />
+    <Compile Include="PDBreader\PdbTokenLine.cs" />
+    <Compile Include="Reader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Specializer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StandardIds.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StandardVisitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SystemTypes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Unstacker.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Updater.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Writer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ExceptionStrings.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Common\InterimKey.snk">
+      <Link>InterimKey.snk</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.VisualBasic.PowerPacks.10.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft Visual Basic PowerPacks 10.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>

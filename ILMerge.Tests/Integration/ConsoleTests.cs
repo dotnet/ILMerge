@@ -19,11 +19,11 @@ namespace ILMerging.Tests.Integration
             var inputAssembly = Assembly.GetExecutingAssembly();
             var keyPath = "test.pfx";
 
-            using (var outputAssembly = new TempFile(Path.Combine(Path.GetTempPath(), Path.ChangeExtension(Path.GetRandomFileName(), ".dll"))))
+            using (var outputFile = TempFile.WithExtension(".dll"))
             {
                 var startInfo = new ProcessStartInfo(
                     ilMergeExePath,
-                    $"{ShadowCopyUtils.GenerateILMergeLibCliSwitches(inputAssembly)} /keyfile:\"{keyPath}\" /out:\"{outputAssembly}\" \"{inputAssembly.Location}\"")
+                    $"{ShadowCopyUtils.GenerateILMergeLibCliSwitches(inputAssembly)} /keyfile:\"{keyPath}\" /out:\"{outputFile}\" \"{inputAssembly.Location}\"")
                 {
                     WorkingDirectory = Path.GetDirectoryName(inputAssembly.Location)
                 };

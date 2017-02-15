@@ -13,6 +13,14 @@ namespace ILMerging.Tests.Helpers
             this.path = path;
         }
 
+        public static TempFile WithExtension(string extension)
+        {
+            return new TempFile(
+                System.IO.Path.Combine(
+                    System.IO.Path.GetTempPath(),
+                    System.IO.Path.ChangeExtension(System.IO.Path.GetRandomFileName(), extension)));
+        }
+
         private string path;
         public string Path => path;
 

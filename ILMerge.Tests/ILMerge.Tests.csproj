@@ -49,16 +49,22 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="BaselineTests.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Integration\ConsoleTests.cs" />
     <Compile Include="Helpers\ShadowCopyUtils.cs" />
     <Compile Include="Helpers\ProcessUtils.cs" />
     <Compile Include="Helpers\StackEnumerator.cs" />
     <Compile Include="Helpers\TempFile.cs" />
+    <Compile Include="KeyTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
     <None Include="test.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="test.snk">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

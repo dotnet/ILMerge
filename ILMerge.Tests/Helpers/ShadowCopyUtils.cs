@@ -21,6 +21,9 @@ namespace ILMerging.Tests.Helpers
                 }
         }
 
+        /// <summary>
+        /// Necessary because of test runners like ReSharper and NCrunch which shadow copy each assembly to an isolated directory
+        /// </summary>
         public static IEnumerable<string> GetTransitiveClosureDirectories(params Assembly[] assemblies)
         {
             return GetTransitiveClosure(assemblies)

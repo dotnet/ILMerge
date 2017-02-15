@@ -8,6 +8,10 @@ namespace ILMerging.Tests.Helpers
     [DebuggerDisplay("{ToString(),nq}")]
     public sealed class TempFile : IDisposable
     {
+        public TempFile() : this(System.IO.Path.GetTempFileName())
+        {
+        }
+
         public TempFile(string path)
         {
             this.path = path;

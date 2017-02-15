@@ -5299,13 +5299,17 @@ namespace System.Compiler{
 
     public class AssemblyCouldNotBeSignedException : System.ApplicationException
     {
-        private const string AssemblyCouldNotBeSignedMessage = "Assembly could not be signed.";
+        public const string DefaultMessage = "Assembly could not be signed.";
 
-        public AssemblyCouldNotBeSignedException() : base(AssemblyCouldNotBeSignedMessage)
+        public AssemblyCouldNotBeSignedException() : base(DefaultMessage)
         {
         }
 
-        public AssemblyCouldNotBeSignedException(Exception innerException) : base(AssemblyCouldNotBeSignedMessage, innerException)
+        public AssemblyCouldNotBeSignedException(Exception innerException) : base(DefaultMessage, innerException)
+        {
+        }
+
+        public AssemblyCouldNotBeSignedException(string message, Exception innerException) : base(message, innerException)
         {
         }
     }
@@ -5349,7 +5353,15 @@ namespace System.Compiler{
           }else
             keyFileNameDoesNotExist = true;
         }
-        assem.PublicKeyOrToken = Writer.GetPublicKey(assem);
+        try
+        {
+          assem.PublicKeyOrToken = Writer.GetPublicKey(assem);
+        }
+        catch (ArgumentException ex)
+        {
+          throw assem.KeyBlob != null ? new AssemblyCouldNotBeSignedException(ex.Message + " (If you are trying to use a PFX, use the VS_KEY_* key container instead of the key file.)", ex) :
+              new AssemblyCouldNotBeSignedException(ex);
+        }
       }
       using (FileStream exeFstream = new FileStream(location, FileMode.Create, FileAccess.Write, FileShare.None)){
         string debugSymbolsLocation = writeDebugSymbols ? Path.ChangeExtension(location, "pdb") : null;

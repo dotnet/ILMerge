@@ -58,6 +58,7 @@
     <Compile Include="Helpers\TempFile.cs" />
     <Compile Include="KeyTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestFiles.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
@@ -72,6 +73,10 @@
     <ProjectReference Include="..\ILMerge\ILMerge.csproj">
       <Project>{84b41834-efde-4e52-a8ce-b51dfcb1d1b2}</Project>
       <Name>ILMerge</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\System.Compiler\System.Compiler.csproj">
+      <Project>{D7E16B38-3893-4EEF-847F-A3BE807E9546}</Project>
+      <Name>System.Compiler</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

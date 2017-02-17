@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="BaselineTests.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Helpers\CspContainerUtils.cs" />
     <Compile Include="Integration\ConsoleTests.cs" />
     <Compile Include="Helpers\ShadowCopyUtils.cs" />
     <Compile Include="Helpers\ProcessUtils.cs" />

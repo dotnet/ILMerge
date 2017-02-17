@@ -5338,7 +5338,8 @@ namespace System.Compiler{
       module.Directory = Path.GetDirectoryName(location);
       bool keyFileNameDoesNotExist = false;
       if (assem != null){
-        assem.KeyContainerName = keyName;
+        if (keyName != null)
+          assem.KeyContainerName = keyName;
         if (keyFileName != null && keyFileName.Length > 0){
           if (!File.Exists(keyFileName)) keyFileName = Path.Combine(module.Directory, keyFileName);
           if (File.Exists(keyFileName)){

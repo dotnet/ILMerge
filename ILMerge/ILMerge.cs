@@ -2316,8 +2316,11 @@ namespace ILMerging {
             WriteToLog("ILMerge: Signed assembly '{0}' with a strong name.", outputFileName);
           }
         }
-        catch (AssemblyCouldNotBeSignedException) {
-          WriteToLog("ILMerge error: The target assembly was not able to be strongly named (did you forget to use the /delaysign option?).");
+        catch (AssemblyCouldNotBeSignedException ex) {
+          if (ex.Message == AssemblyCouldNotBeSignedException.DefaultMessage)
+            WriteToLog("ILMerge error: The target assembly was not able to be strongly named (did you forget to use the /delaysign option?).");
+          else
+            WriteToLog("ILMerge error: The target assembly was not able to be strongly named. " + ex.Message);
         }
       }
       #endregion

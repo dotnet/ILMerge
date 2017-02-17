@@ -5296,7 +5296,24 @@ namespace System.Compiler{
     }
   }
   public class KeyFileNotFoundException : System.ArgumentException{}
-  public class AssemblyCouldNotBeSignedException : System.ApplicationException{}
+
+    public class AssemblyCouldNotBeSignedException : System.ApplicationException
+    {
+        public const string DefaultMessage = "Assembly could not be signed.";
+
+        public AssemblyCouldNotBeSignedException() : base(DefaultMessage)
+        {
+        }
+
+        public AssemblyCouldNotBeSignedException(Exception innerException) : base(DefaultMessage, innerException)
+        {
+        }
+
+        public AssemblyCouldNotBeSignedException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+    }
+
   public class DebugSymbolsCouldNotBeWrittenException : System.ApplicationException { }
   internal class Writer {
     private Writer(){}
@@ -5336,7 +5353,15 @@ namespace System.Compiler{
           }else
             keyFileNameDoesNotExist = true;
         }
-        assem.PublicKeyOrToken = Writer.GetPublicKey(assem);
+        try
+        {
+          assem.PublicKeyOrToken = Writer.GetPublicKey(assem);
+        }
+        catch (ArgumentException ex)
+        {
+          throw assem.KeyBlob != null ? new AssemblyCouldNotBeSignedException(ex.Message + " (If you are trying to use a PFX, use the VS_KEY_* key container instead of the key file.)", ex) :
+              new AssemblyCouldNotBeSignedException(ex);
+        }
       }
       using (FileStream exeFstream = new FileStream(location, FileMode.Create, FileAccess.Write, FileShare.None)){
         string debugSymbolsLocation = writeDebugSymbols ? Path.ChangeExtension(location, "pdb") : null;
@@ -5349,90 +5374,20 @@ namespace System.Compiler{
       if (keyFileNameDoesNotExist) throw new KeyFileNotFoundException();
       if (delaySign || assem == null) return;
       if (assem.KeyBlob != null || (assem.KeyContainerName != null && assem.KeyContainerName.Length > 0)){
-        try{           
-          if (!Writer.StrongNameSignatureGeneration(location, keyName, assem.KeyBlob, assem.KeyBlob == null ? 0 : assem.KeyBlob.Length, IntPtr.Zero, IntPtr.Zero))
-            throw new AssemblyCouldNotBeSignedException();
-        }catch{
-          if (!Writer.MscorsnStrongNameSignatureGeneration(location, keyName, assem.KeyBlob, assem.KeyBlob == null ? 0 : assem.KeyBlob.Length, IntPtr.Zero, IntPtr.Zero))
-            throw new AssemblyCouldNotBeSignedException();
+        try
+        {
+          ClrStrongName.SignatureGeneration(location, keyName, assem.KeyBlob);
+        }catch (Exception ex) {
+          throw new AssemblyCouldNotBeSignedException(ex);
         }
       }
     }
-    [DllImport("mscoree.dll", EntryPoint="StrongNameSignatureGeneration",  
-       SetLastError=true, CharSet=CharSet.Unicode, ExactSpelling=true,
-       CallingConvention=CallingConvention.StdCall)]
-    private static extern bool StrongNameSignatureGeneration(
-      string     wszFilePath,        // [in] valid path to the PE file for the assembly
-      string     wszKeyContainer,    // [in] desired key container name
-      [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)]
-      byte[]     pbKeyBlob,          // [in] public/private key blob (optional)
-      int      cbKeyBlob,
-      IntPtr     ppbSignatureBlob,   // [out] signature blob
-      IntPtr      pcbSignatureBlob);
-    [DllImport("mscorsn.dll", EntryPoint="StrongNameSignatureGeneration",  
-       SetLastError=true, CharSet=CharSet.Unicode, ExactSpelling=true,
-       CallingConvention=CallingConvention.StdCall)]
-    private static extern bool MscorsnStrongNameSignatureGeneration(
-      string     wszFilePath,        // [in] valid path to the PE file for the assembly
-      string     wszKeyContainer,    // [in] desired key container name
-      [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)]
-      byte[]     pbKeyBlob,          // [in] public/private key blob (optional)
-      int      cbKeyBlob,
-      IntPtr     ppbSignatureBlob,   // [out] signature blob
-      IntPtr      pcbSignatureBlob);
-    private unsafe static byte[] GetPublicKey(AssemblyNode/*!*/ assem) {
+    private static byte[] GetPublicKey(AssemblyNode/*!*/ assem) {
       Debug.Assert(assem != null);
-      IntPtr publicKey = IntPtr.Zero;
-      int size;
-      try{
-
-        if (assem.KeyBlob != null){
-          Writer.StrongNameGetPublicKey(null, assem.KeyBlob, assem.KeyBlob.Length, out publicKey, out size);
-          if (publicKey == IntPtr.Zero) return assem.KeyBlob;
-        }else if (assem.KeyContainerName != null){
-          Writer.StrongNameGetPublicKey(assem.KeyContainerName, null, 0, out publicKey, out size);
-          if (publicKey == IntPtr.Zero) return null;
-        }else
-          return assem.PublicKeyOrToken;
-        byte[] result = new byte[size];
-        byte* ptr = (byte*)publicKey;
-        for (int i = 0; i < size; i++) result[i] = *ptr++;
-        return result;
-      }catch{} {
-        if (assem.KeyBlob != null){
-          Writer.MscorsnStrongNameGetPublicKeyUsing(null, assem.KeyBlob, assem.KeyBlob.Length, out publicKey, out size);
-          if (publicKey == IntPtr.Zero) return assem.KeyBlob;
-        }else if (assem.KeyContainerName != null){
-          Writer.MscorsnStrongNameGetPublicKeyUsing(assem.KeyContainerName, null, 0, out publicKey, out size);
-          if (publicKey == IntPtr.Zero) return null;
-        }else
-          return assem.PublicKeyOrToken;
-        byte[] result = new byte[size];
-        byte* ptr = (byte*)publicKey;
-        for (int i = 0; i < size; i++) result[i] = *ptr++;
-        return result;
-      }
+      if (assem.KeyContainerName != null) return new Reflection.StrongNameKeyPair(assem.KeyContainerName).PublicKey;
+      if (assem.KeyBlob != null) return new Reflection.StrongNameKeyPair(assem.KeyBlob).PublicKey;
+      return assem.PublicKeyOrToken;
     }
-    [DllImport("mscoree.dll", EntryPoint="StrongNameGetPublicKey",  
-       SetLastError=true, CharSet=CharSet.Unicode, ExactSpelling=true,
-       CallingConvention=CallingConvention.StdCall)]
-    private static extern bool StrongNameGetPublicKey(
-      string   wszKeyContainer,    // [in] desired key container name
-      [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)]
-      byte[]   pbKeyBlob,          // [in] public/private key blob (optional)
-      int     cbKeyBlob,
-      [Out] out IntPtr ppbPublicKeyBlob,   // [out] public key blob
-      [Out] out int     pcbPublicKeyBlob);
-    [DllImport("mscorsn.dll", EntryPoint="StrongNameGetPublicKey",  
-       SetLastError=true, CharSet=CharSet.Unicode, ExactSpelling=true,
-       CallingConvention=CallingConvention.StdCall)]
-    private static extern bool MscorsnStrongNameGetPublicKeyUsing(
-      string   wszKeyContainer,    // [in] desired key container name
-      [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)]
-      byte[]   pbKeyBlob,          // [in] public/private key blob (optional)
-      int     cbKeyBlob,
-      [Out] out IntPtr ppbPublicKeyBlob,   // [out] public key blob
-      [Out] out int     pcbPublicKeyBlob);
 
     internal static void WritePE(Stream/*!*/ executable, Stream debugSymbols, Module/*!*/ module) {
       MemoryStream mstream = new MemoryStream();

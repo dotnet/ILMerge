@@ -124,6 +124,7 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ClrStrongName.cs" />
     <Compile Include="Comparer.cs">
       <SubType>Code</SubType>
     </Compile>

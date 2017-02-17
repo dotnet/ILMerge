@@ -25,6 +25,8 @@ namespace ILMerging {
     private ArrayList assemblyNames = null;
     private bool keyfileSpecified = false;
     private string keyfile = null;
+    private bool keyContainerSpecified = false;
+    private string keyContainer = null;
     private bool strongNameLost = false;
     private bool closed = false;
     private bool debugInfo = true;
@@ -97,9 +99,9 @@ namespace ILMerging {
       get {
         return
 #if CROSSPLATFORM
- "Usage: ilmerge [/lib:directory]* [/log[:filename]] [/keyfile:filename [/delaysign]] [/internalize[:filename]] [/t[arget]:(library|exe|winexe)] [/closed] [/ndebug] [/ver:version] [/copyattrs [/allowMultiple] [/keepFirst]] [/xmldocs] [/attr:filename] [/targetplatform:<version>[,<platformdir>] | /v1 | /v1.1 | /v2 | /v4] [/useFullPublicKeyForReferences] [/wildcards] [/zeroPeKind] [/allowDup:type]* [/union] [/align:n] /out:filename <primary assembly> [<other assemblies>...]";
+ "Usage: ilmerge [/lib:directory]* [/log[:filename]] [/keyfile:filename | /keycontainer:containername [/delaysign]] [/internalize[:filename]] [/t[arget]:(library|exe|winexe)] [/closed] [/ndebug] [/ver:version] [/copyattrs [/allowMultiple] [/keepFirst]] [/xmldocs] [/attr:filename] [/targetplatform:<version>[,<platformdir>] | /v1 | /v1.1 | /v2 | /v4] [/useFullPublicKeyForReferences] [/wildcards] [/zeroPeKind] [/allowDup:type]* [/union] [/align:n] /out:filename <primary assembly> [<other assemblies>...]";
 #else
-          "Usage: ilmerge [/lib:directory]* [/log[:filename]] [/keyfile:filename [/delaysign]] [/internalize[:filename]] [/t[arget]:(library|exe|winexe)] [/closed] [/ndebug] [/ver:version] [/copyattrs [/allowMultiple] [/keepFirst]] [/xmldocs] [/attr:filename] [/useFullPublicKeyForReferences] [/wildcards] [/zeroPeKind] [/allowDup:type]* [/union] [/align:n] /out:filename <primary assembly> [<other assemblies>...]";
+          "Usage: ilmerge [/lib:directory]* [/log[:filename]] [/keyfile:filename | /keycontainer:containername [/delaysign]] [/internalize[:filename]] [/t[arget]:(library|exe|winexe)] [/closed] [/ndebug] [/ver:version] [/copyattrs [/allowMultiple] [/keepFirst]] [/xmldocs] [/attr:filename] [/useFullPublicKeyForReferences] [/wildcards] [/zeroPeKind] [/allowDup:type]* [/union] [/align:n] /out:filename <primary assembly> [<other assemblies>...]";
 #endif
       }
     }
@@ -845,11 +847,15 @@ namespace ILMerging {
           Console.WriteLine("/keyfile option given, but no file name.");
         }
       }
-      else {
-        if (this.delaySign) {
+      if (this.keyContainerSpecified) {
+        if (this.keyContainer == null) {
           errorInOptions = true;
-          Console.WriteLine("/delaysign option given, but not the /keyfile option.");
+          Console.WriteLine("/keycontainer option given, but no container name.");
         }
+      }
+      if (this.delaySign && !keyfileSpecified && !keyContainerSpecified) {
+        errorInOptions = true;
+        Console.WriteLine("/delaysign option given, but not the /keyfile or /keycontainer options.");
       }
 #if CROSSPLATFORM
       if (this.targetPlatformSpecified) {
@@ -1076,6 +1082,10 @@ namespace ILMerging {
             if (val != "")
               this.keyfile = val;
             this.keyfileSpecified = true;
+          } else if (String.Compare(key, "keycontainer", true) == 0) {
+            if (val != "")
+              this.keyContainer = val;
+            this.keyContainerSpecified = true;
           } else if (String.Compare(key, "ver", true) == 0) {
             if (!String.IsNullOrEmpty(val)) {
               System.Version v = null;
@@ -1307,7 +1317,7 @@ namespace ILMerging {
       set { debugInfo = value; }
     }
     /// <summary>
-    /// Controls whether the specified keyfile file is to be used as containing
+    /// Controls whether the specified key file or container is to be used as containing
     /// only a public key and so delay-signing the target assembly.
     /// </summary>
     public bool DelaySign {
@@ -1384,12 +1394,23 @@ namespace ILMerging {
     /// <summary>
     /// Path to the key file that will be used to strongly-name the target assembly.
     /// Needs to be a full path, e.g., "c:\tmp\foo.snk".
-    /// It should be the same key file that was used to sign the primary assembly,
+    /// It should be the same key that was used to sign the primary assembly,
     /// if the primary assembly has a strong name.
     /// </summary>
     public string KeyFile {
       get { return keyfile; }
       set { keyfile = value; }
+    }
+    /// <summary>
+    /// Name of the key container that will be used to strongly-name the target assembly.
+    /// Needs to be the name of a machine-level RSA CSP container which has had an SNK blob imported.
+    /// Visual Studio handles this when it remembers PFX passwords and passes the container name to MSBuild.
+    /// It should be the same key that was used to sign the primary assembly,
+    /// if the primary assembly has a strong name.
+    /// </summary>
+    public string KeyContainer {
+      get { return keyContainer; }
+      set { keyContainer = value; }
     }
     /// <summary>
     /// Controls whether output log messages are produced during weaving. (default: false)
@@ -2216,7 +2237,11 @@ namespace ILMerging {
       }
       #endregion
       #region Signing Assembly
-      if (keyfile != null) {
+      if (keyContainer != null)
+      {
+        targetAssembly.KeyContainerName = keyContainer;
+      }
+      else if (keyfile != null) {
         if (!File.Exists(keyfile))
           WriteToLog("ILMerge: Cannot open key file: '{0}'. Not trying to sign output.", keyfile);
         else {

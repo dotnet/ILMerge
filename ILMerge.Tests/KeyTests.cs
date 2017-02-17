@@ -1,5 +1,7 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Reflection;
+using System.Security.Cryptography;
 using ILMerging.Tests.Helpers;
 using NUnit.Framework;
 
@@ -20,6 +22,34 @@ namespace ILMerging.Tests
                 Assert.That(
                     AssemblyName.GetAssemblyName(outputFile).GetPublicKey(),
                     Is.EqualTo(new StrongNameKeyPair(File.ReadAllBytes(TestFiles.TestSnk)).PublicKey));
+            }
+        }
+
+        [Test]
+        public void Can_sign_using_keycontainer()
+        {
+            var keyContainerName = Guid.NewGuid().ToString();
+            CspContainerUtils.ImportBlob(true, keyContainerName, KeyNumber.Signature, File.ReadAllBytes(TestFiles.TestSnk));
+            try
+            {
+                using (var outputFile = TempFile.WithExtension(".dll"))
+                {
+                    var ilMerge = new ILMerge
+                    {
+                        KeyContainer = keyContainerName,
+                        OutputFile = outputFile
+                    };
+                    ilMerge.SetUpInputAssemblyForTest(Assembly.GetExecutingAssembly());
+                    ilMerge.Merge();
+
+                    Assert.That(
+                        AssemblyName.GetAssemblyName(outputFile).GetPublicKey(),
+                        Is.EqualTo(new StrongNameKeyPair(File.ReadAllBytes(TestFiles.TestSnk)).PublicKey));
+                }
+            }
+            finally
+            {
+                CspContainerUtils.Delete(true, keyContainerName, KeyNumber.Signature);
             }
         }
 

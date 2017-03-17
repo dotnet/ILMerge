@@ -5,7 +5,11 @@ namespace ILMerging.Tests
 {
     internal static class TestFiles
     {
-        public static string TestSnk { get; } = Path.Combine(TestContext.CurrentContext.TestDirectory, "test.snk");
-        public static string TestPfx { get; } = Path.Combine(TestContext.CurrentContext.TestDirectory, "test.pfx");
+        private static string FromCurrentDir(string fileName)
+            => Path.Combine(TestContext.CurrentContext.TestDirectory, fileName);
+
+        public static string TestSnk => FromCurrentDir("test.snk");
+
+        public static string TestPfx => FromCurrentDir("test.pfx");
     }
 }

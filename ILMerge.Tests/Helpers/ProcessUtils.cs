@@ -14,46 +14,47 @@ namespace ILMerging.Tests.Helpers
             startInfo.RedirectStandardError = true;
             startInfo.CreateNoWindow = true;
 
-            var process = new Process { StartInfo = startInfo };
-
-            var standardStreamData = new List<StandardStreamData>();
-            var currentData = new StringBuilder();
-            var currentDataIsError = false;
-
-            process.OutputDataReceived += (sender, e) =>
+            using (var process = new Process { StartInfo = startInfo })
             {
-                if (e.Data == null) return;
-                if (currentDataIsError)
+                var standardStreamData = new List<StandardStreamData>();
+                var currentData = new StringBuilder();
+                var currentDataIsError = false;
+
+                process.OutputDataReceived += (sender, e) =>
                 {
-                    if (currentData.Length != 0)
-                        standardStreamData.Add(new StandardStreamData(currentDataIsError, currentData.ToString()));
-                    currentData.Clear();
-                    currentDataIsError = false;
-                }
-                currentData.AppendLine(e.Data);
-            };
-            process.ErrorDataReceived += (sender, e) =>
-            {
-                if (e.Data == null) return;
-                if (!currentDataIsError)
+                    if (e.Data == null) return;
+                    if (currentDataIsError)
+                    {
+                        if (currentData.Length != 0)
+                            standardStreamData.Add(new StandardStreamData(currentDataIsError, currentData.ToString()));
+                        currentData.Clear();
+                        currentDataIsError = false;
+                    }
+                    currentData.AppendLine(e.Data);
+                };
+                process.ErrorDataReceived += (sender, e) =>
                 {
-                    if (currentData.Length != 0)
-                        standardStreamData.Add(new StandardStreamData(currentDataIsError, currentData.ToString()));
-                    currentData.Clear();
-                    currentDataIsError = true;
-                }
-                currentData.AppendLine(e.Data);
-            };
+                    if (e.Data == null) return;
+                    if (!currentDataIsError)
+                    {
+                        if (currentData.Length != 0)
+                            standardStreamData.Add(new StandardStreamData(currentDataIsError, currentData.ToString()));
+                        currentData.Clear();
+                        currentDataIsError = true;
+                    }
+                    currentData.AppendLine(e.Data);
+                };
 
-            process.Start();
-            process.BeginOutputReadLine();
-            process.BeginErrorReadLine();
-            process.WaitForExit();
+                process.Start();
+                process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
+                process.WaitForExit();
 
-            if (currentData.Length != 0)
-                standardStreamData.Add(new StandardStreamData(currentDataIsError, currentData.ToString()));
+                if (currentData.Length != 0)
+                    standardStreamData.Add(new StandardStreamData(currentDataIsError, currentData.ToString()));
 
-            return new ProcessResult(process.ExitCode, standardStreamData.ToArray());
+                return new ProcessResult(process.ExitCode, standardStreamData.ToArray());
+            }
         }
 
         [DebuggerDisplay("{ToString(),nq}")]

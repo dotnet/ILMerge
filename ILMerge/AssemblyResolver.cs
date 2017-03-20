@@ -27,22 +27,45 @@ namespace AssemblyResolving
 		private bool debugInfo = true;
 		private bool shortB = false;
 
-		public AssemblyResolver() { }
+        /// <summary>
+        /// This object is used to locate an assembly when it is needed to be loaded
+        /// (i.e., not found in the cache).
+        /// </summary>
+        public AssemblyResolver() { }
+        /// <summary>
+        /// This object is used to locate an assembly when it is needed to be loaded
+        /// (i.e., not found in the cache).
+        /// </summary>
+        /// <param name="InputDirectory">Specifies the primary directory in which to look for assemblies.</param>
 		public AssemblyResolver(string InputDirectory)
 		{
 			if ( InputDirectory == null )
 				throw new System.ArgumentNullException();
 			inputDirectory = InputDirectory;
 		}
-    public AssemblyResolver(IDictionary AssemblyCache)
+        /// <summary>
+        /// This object is used to locate an assembly when it is needed to be loaded
+        /// (i.e., not found in the cache).
+        /// </summary>
+        /// <param name="AssemblyCache">A map from assembly names (strings) to AssemblyNode. First
+        /// place that is looked in for assemblies to be loaded.</param>
+        public AssemblyResolver(IDictionary AssemblyCache)
 		{
 			h = AssemblyCache;
 		}
-		public IDictionary AssemblyCache
+        /// <summary>
+        /// A map from string names to AssemblyNode. It is used to locate
+        /// metadata references.
+        /// </summary>
+        public IDictionary AssemblyCache
 		{
 			set { h = value; }
 		}
-		public string[] SearchDirectories
+        /// <summary>
+        /// The set of directory paths that will be searched for assemblies by the 
+        /// assembly resolver.
+        /// </summary>
+        public string[] SearchDirectories
 		{
 			set 
 			{
@@ -55,7 +78,10 @@ namespace AssemblyResolving
 				}
 			}
 		}
-		public string InputDirectory 
+        /// <summary>
+        /// The first directory in which an assembly is searched for if it is not found in the cache.
+        /// </summary>
+        public string InputDirectory 
 		{
 			set { 
 				if ( value == null )
@@ -130,6 +156,13 @@ namespace AssemblyResolving
 				}
 			}
 		}
+        /// <summary>
+        /// This method is installed as hook so that each assembly that is loaded uses it to resolve
+        /// any assembly references.
+        /// </summary>
+        /// <param name="assemblyReference">The reference that must be chased down to load.</param>
+        /// <param name="referencingModule">The assembly that contains the reference.</param>
+        /// <returns></returns>
 		public AssemblyNode Resolve(AssemblyReference assemblyReference, Module referencingModule)
 		{
 			WriteToLog("AssemblyResolver: Assembly '{0}' is referencing assembly '{1}'.",

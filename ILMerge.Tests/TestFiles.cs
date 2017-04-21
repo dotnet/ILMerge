@@ -1,8 +1,11 @@
-﻿namespace ILMerging.Tests
+﻿using System.IO;
+using NUnit.Framework;
+
+namespace ILMerging.Tests
 {
     internal static class TestFiles
     {
-        public const string TestSnk = "test.snk";
-        public const string TestPfx = "test.pfx";
+        public static string TestSnk { get; } = Path.Combine(TestContext.CurrentContext.TestDirectory, "test.snk");
+        public static string TestPfx { get; } = Path.Combine(TestContext.CurrentContext.TestDirectory, "test.pfx");
     }
 }

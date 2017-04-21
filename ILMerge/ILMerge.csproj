@@ -7,7 +7,7 @@
     <Copyright>(c) Microsoft Corporation. All rights reserved.</Copyright>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ApplicationIcon>App.ico</ApplicationIcon>
-    <AssemblyOriginatorKeyFile>..\Common\InterimKey.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)..\Common\InterimKey.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
     <OutputType>Exe</OutputType>
     <TargetFramework>net40</TargetFramework>
@@ -26,5 +26,22 @@
   <ItemGroup>
     <ProjectReference Include="..\System.Compiler\System.Compiler.csproj" />
   </ItemGroup>
+
+  <Target Name="ILMergeConsoleApp" AfterTargets="Build">
+
+    <Error Text="ILMerge currently only works on Windows"
+           Condition="'$(OS)' != 'Windows_NT'" />
+
+    <Message Text="Running IL merging on System.Compiler and ILMerge.exe" Importance="High" />
+    <MakeDir Directories="$(OutDir)\final" />
+    <Exec Command="ILMerge.exe
+          /ndebug
+          &quot;/log:$(MSBuildProjectDirectory)/$(IntermediateOutputPath)/ilmerge.log&quot;
+          &quot;/keyfile:$(AssemblyOriginatorKeyFile)&quot;
+          /t:exe
+          /out:final/ILMerge.exe
+          ILMerge.exe System.Compiler.dll"
+          WorkingDirectory="$(OutDir)" />
+  </Target>
 
 </Project>

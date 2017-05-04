@@ -1,5 +1,7 @@
 # ILMerge
 
+[![NuGet](https://img.shields.io/nuget/v/ILMerge.svg?style=flat-square&label=nuget)](https://www.nuget.org/packages/ILMerge/)
+
 ILMerge is a utility that merges multiple .NET assemblies into a single assembly.
 It is freely available for use and is available as a [NuGet package](https://www.nuget.org/packages/ilmerge).
 
@@ -31,3 +33,34 @@ Currently, ILMerge works only on Windows-based platforms. It does not yet suppor
 
 If you use ASP.NET v2.0, then it provides a tool (based on ILMerge) to combine assemblies created during precompilation.
 You can get more details from the [ASP.NET web site](http://msdn.microsoft.com/en-us/library/bb397866.aspx).
+
+## Usage
+
+### MSBuild
+
+ILMerge can be used from MSBuild by as a NuGet package.
+
+```xml
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="ILMerge" Version="2.15.0" />
+  </ItemGroup>
+
+  <Target Name="ILMerge">
+    <!-- the ILMergePath property points to the location of ILMerge.exe console application -->
+    <Exec Command="$(ILMergeConsolePath) /out:Merged.dll File1.dll File2.dll" />
+  </Target>
+
+</Project>
+```
+
+From Visual Studio Developer Command Prompt:
+```ps1
+# Download/install the package reference
+msbuild /t:Restore
+
+# Run the ILMerge target
+msbuild /t:ILMerge
+```
+

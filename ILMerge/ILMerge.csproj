@@ -29,19 +29,16 @@
 
   <Target Name="ILMergeConsoleApp" AfterTargets="Build">
 
-    <Error Text="ILMerge currently only works on Windows"
-           Condition="'$(OS)' != 'Windows_NT'" />
+    <Error Text="ILMerge currently only works on Windows" Condition="'$(OS)' != 'Windows_NT'" />
 
     <Message Text="Running IL merging on System.Compiler and ILMerge.exe" Importance="High" />
     <MakeDir Directories="$(OutDir)\final" />
-    <Exec Command="ILMerge.exe
-          /ndebug
-          &quot;/log:$(MSBuildProjectDirectory)/$(IntermediateOutputPath)/ilmerge.log&quot;
-          &quot;/keyfile:$(AssemblyOriginatorKeyFile)&quot;
-          /t:exe
-          /out:final/ILMerge.exe
-          ILMerge.exe System.Compiler.dll"
-          WorkingDirectory="$(OutDir)" />
+
+    <PropertyGroup>
+      <ILMergeCommand>ILMerge.exe /ndebug "/log:$(MSBuildProjectDirectory)/$(IntermediateOutputPath)ilmerge.log" "/keyfile:$(AssemblyOriginatorKeyFile)" /t:exe /out:final/ILMerge.exe ILMerge.exe System.Compiler.dll</ILMergeCommand>
+    </PropertyGroup>
+
+    <Exec Command="$(ILMergeCommand)" WorkingDirectory="$(OutDir)" />
   </Target>
 
 </Project>

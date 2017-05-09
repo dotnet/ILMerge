@@ -10,9 +10,11 @@
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)..\Common\InterimKey.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net40</TargetFramework>
+    <TargetFramework>net452</TargetFramework>
     <DefineConstants>$(DefineConstants);INTERNAL;CROSSPLATFORM;V2</DefineConstants>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <LangVersion>6</LangVersion>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
 
   <!-- NuGet package settings -->

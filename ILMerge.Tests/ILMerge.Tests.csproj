@@ -3,6 +3,8 @@
   <PropertyGroup>
     <RootNamespace>ILMerging.Tests</RootNamespace>
     <TargetFramework>net452</TargetFramework>
+    <LangVersion>6</LangVersion>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
 
   <ItemGroup>

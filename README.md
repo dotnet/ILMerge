@@ -6,7 +6,7 @@ ILMerge is a utility that merges multiple .NET assemblies into a single assembly
 It is freely available for use and is available as a [NuGet package](https://www.nuget.org/packages/ilmerge).
 
 If you have any problems using it, please get in touch. (mbarnett _at_ microsoft _dot_ com).
-But first try reading the documentation.
+But first try reading [the documentation](ilmerge-manual.md).
 
 ILMerge takes a set of input assemblies and merges them into one target assembly.
 The first assembly in the list of input assemblies is the primary assembly.
@@ -25,7 +25,7 @@ The current version is 2.14.1208 (created on 8 December 2014).
 NOTE: There is no longer a version of ILMerge that runs in the v1.1 runtime.
 
 ILMerge runs in the v4.0 .NET Runtime,
-but it is also able to merge assemblies from other framework versions using the /targetplatformoption.
+but it is also able to merge assemblies from other framework versions using the `/targetplatformoption`.
 Please see the documentation.
 (However, it can merge PDB files only for v2 (and later) assemblies.)
 

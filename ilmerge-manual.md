@@ -1,7 +1,7 @@
 # ILMerge
 
 Michael Barnett<br/>
-Programming Languages and Methods<br/>
+Research in Software Engineering (RiSE)<br/>
 Microsoft Research<br/>
 Copyright &copy; Microsoft Corporation. All rights reserved.
 
@@ -367,7 +367,7 @@ I do not know of any way to have ILMerge do the right thing in such cases. There
 
 # 5 Dependencies
 
-ILMerge is a stand-alone assembly dependent only on the v2.0 .NET Framework. (It actually uses two other assemblies: the assembly that makes up CCI itself, `System.Compiler.dll`, and `AssemblyResolver.dll`, which provides a small component for finding and loading assemblies when requested by the CCI Reader. But those assemblies have been merged into ILMerge using ILMerge before it is distributed.
+ILMerge is a stand-alone assembly dependent only on the v4.0 .NET Framework. (It actually uses two other assemblies: the assembly that makes up CCI itself, `System.Compiler.dll`, and `AssemblyResolver.dll`, which provides a small component for finding and loading assemblies when requested by the CCI Reader. But those assemblies have been merged into ILMerge using ILMerge before it is distributed.)
 
 # 6 Acknowledgements
 

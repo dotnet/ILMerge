@@ -1,12 +1,18 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.9
+VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ILMerge", "ILMerge\ILMerge.csproj", "{84B41834-EFDE-4E52-A8CE-B51DFCB1D1B2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Compiler", "System.Compiler\System.Compiler.csproj", "{D7E16B38-3893-4EEF-847F-A3BE807E9546}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ILMerge.Tests", "ILMerge.Tests\ILMerge.Tests.csproj", "{734805E8-B2FB-41E3-A669-80429AA50C98}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B2EC5A7D-1059-4EC6-95FB-B2075609DF4B}"
+	ProjectSection(SolutionItems) = preProject
+		ilmerge-manual.md = ilmerge-manual.md
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

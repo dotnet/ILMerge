@@ -38,7 +38,7 @@ You can get more details from the [ASP.NET web site](http://msdn.microsoft.com/e
 
 ### MSBuild
 
-ILMerge can be used from MSBuild by as a NuGet package.
+ILMerge can be used in MSBuild using the NuGet package:
 
 ```xml
 <Project Sdk="Microsoft.NET.Sdk">

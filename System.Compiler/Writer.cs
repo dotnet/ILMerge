@@ -3679,9 +3679,12 @@ namespace System.Compiler{
         for (int i = 0; i < exceptionHandlersCount; i++){
           ExceptionHandler eh = method.ExceptionHandlers[i];
           if (eh == null || eh.HandlerStartBlock == null || (eh.HandlerType != NodeType.Catch && eh.HandlerType != NodeType.Filter)) continue;
-          this.exceptionBlock[eh.HandlerStartBlock.UniqueKey] = eh;
-        }
-      }
+          if (eh.HandlerType == NodeType.Catch)
+            this.exceptionBlock[eh.HandlerStartBlock.UniqueKey] = eh;
+          else
+            this.exceptionBlock[eh.FilterExpression.UniqueKey] = eh;
+                }
+            }
       this.VisitBlock(method.Body);
 
 #if !FxCop
@@ -3701,7 +3704,8 @@ namespace System.Compiler{
       int localVarSigTok = this.methodInfo.localVarSigTok;
       bool fatHeader = codeSize >= 64 || exceptionHandlersCount > 0 || maxStack > 8 || localVarSigTok != 0;
       if (fatHeader) {
-        //Emit fat header
+        //Emit fat header>	System.Compiler.dll!System.Compiler.Ir2md.VisitMethodBody(System.Compiler.Method method) Line 3699	C#
+
         byte header = 0x03;
         if (method.InitLocals) header |= 0x10;
         if (exceptionHandlersCount > 0) header |= 0x08;

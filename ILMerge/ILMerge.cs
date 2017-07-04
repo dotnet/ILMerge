@@ -303,7 +303,7 @@ namespace ILMerging {
             #endregion If a type is renamed, rename any associated resource
 
           } else {
-            string msg = String.Format("ERROR!!: Duplicate type '{0}' found in assembly '{1}'. Do you want to use the /alllowDup option?",
+            string msg = String.Format("ERROR!!: Duplicate type '{0}' found in assembly '{1}'. Do you want to use the /allowDup option?",
               t.FullName, t.DeclaringModule.Name);
             WriteToLog(msg);
             throw new InvalidOperationException("ILMerge.Merge: " + msg);

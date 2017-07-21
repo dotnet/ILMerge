@@ -42,6 +42,7 @@ using System.Globalization;
 using Marshal = System.Runtime.InteropServices.Marshal;
 using System.Runtime.InteropServices;
 using System.IO;
+using System.Text;
 
 #if CCINamespace
 namespace Microsoft.Cci.Metadata{
@@ -1715,20 +1716,25 @@ namespace System.Compiler.Metadata{
     private static void ParseSimpleTypeName(string/*!*/ source, out string/*!*/ name, ref int i) {
       int n = source.Length;
       int start = i;
+      var sb = new StringBuilder();
       for (; i < n; i++){
         char ch = source[i];
         if (ch == '\\'){ i++; continue;}
         if (ch == '.' || ch == '+' || ch == '&' || ch == '*' || ch == '[' || ch == '!') break;
+        sb.Append(ch);
         if (ch == '<'){
           int unmatched = 1;
           while (unmatched > 0 && ++i < n){
             ch = source[i];
+            if (ch != '\\') sb.Append(ch); else sb.Append(source[i + 1]);
             if (ch == '\\') i++;
             else if (ch == '<') unmatched++;
             else if (ch == '>') unmatched--;
           }
         }
       }
+      name = sb.ToString();
+      return;
       if (i < n)
         name = source.Substring(start, i-start);
       else

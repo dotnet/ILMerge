@@ -4668,16 +4668,18 @@ namespace System.Compiler{
         sb.Append('&');
         goto done;
       }
-      if (type.Template == null)
-        sb.Append(type.FullName);
-      else{
+      if (type.Template == null){
+        var escapedName = type.FullName.Replace(",", "\\,");
+        sb.Append(escapedName);
+      }else{
         sb.Append(type.Template.FullName);
         sb.Append('[');
-        for (int i = 0, n = type.ConsolidatedTemplateArguments == null ? 0 : type.ConsolidatedTemplateArguments.Count; i < n; i++) {
+        for (int i = 0, n = type.ConsolidatedTemplateArguments == null ? 0 : type.ConsolidatedTemplateArguments.Count; i < n; i++)
+        {
           //^ assert type.ConsolidatedTemplateArguments != null;
           bool isAssemQual = true;
           this.AppendSerializedTypeName(sb, type.ConsolidatedTemplateArguments[i], ref isAssemQual);
-          if (i < n-1) sb.Append(',');
+          if (i < n - 1) sb.Append(',');
         }
         sb.Append(']');
       }

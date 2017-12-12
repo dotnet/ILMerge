@@ -27,9 +27,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\System.Compiler\System.Compiler.csproj" />
+    <PackageReference Include="MicroBuild.Core" Version="0.2.0" PrivateAssets="all"/>
   </ItemGroup>
 
-  <Target Name="ILMergeConsoleApp" AfterTargets="Build">
+  <Target Name="ILMergeConsoleApp" BeforeTargets="AfterBuild">
 
     <Error Text="ILMerge currently only works on Windows" Condition="'$(OS)' != 'Windows_NT'" />
 
@@ -41,6 +42,16 @@
     </PropertyGroup>
 
     <Exec Command="$(ILMergeCommand)" WorkingDirectory="$(OutDir)" />
+  </Target>
+
+  <Target Name="BeforeSign" BeforeTargets="SignFiles">
+    <ItemGroup>
+      <FilesToSign Include="$(MSBuildThisFileDirectory)\$(OutDir)\final\ILMerge.exe">
+        <Authenticode>Microsoft</Authenticode>
+        <StrongName>StrongName</StrongName>
+      </FilesToSign>
+    </ItemGroup>
+    <Message Text="Files To Sign : @(FilesToSign, '%0a')" Importance="High"/>
   </Target>
 
 </Project>

@@ -23,11 +23,12 @@
     <NuspecProperties>configuration=$(Configuration);version=$(Version)</NuspecProperties>
     <!-- ignore warnings about the long description field. See https://github.com/NuGet/Home/issues/4587 -->
     <NoPackageAnalysis>true</NoPackageAnalysis>
+    <DelaySign>true</DelaySign>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\System.Compiler\System.Compiler.csproj" />
-    <PackageReference Include="MicroBuild.Core" Version="0.2.0" PrivateAssets="all"/>
+    <PackageReference Include="MicroBuild.Core" Version="0.2.0" PrivateAssets="all" />
   </ItemGroup>
 
   <Target Name="ILMergeConsoleApp" BeforeTargets="AfterBuild">
@@ -38,7 +39,7 @@
     <MakeDir Directories="$(OutDir)\final" />
 
     <PropertyGroup>
-      <ILMergeCommand>ILMerge.exe /ndebug "/log:$(MSBuildProjectDirectory)/$(IntermediateOutputPath)ilmerge.log" "/keyfile:$(AssemblyOriginatorKeyFile)" /t:exe /out:final/ILMerge.exe ILMerge.exe System.Compiler.dll</ILMergeCommand>
+      <ILMergeCommand>ILMerge.exe /ndebug "/log:$(MSBuildProjectDirectory)/$(IntermediateOutputPath)ilmerge.log" "/delaysign" "/keyfile:$(AssemblyOriginatorKeyFile)" "/targetplatform:v4,%ProgramFiles(x86)%\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0" /t:exe /out:final/ILMerge.exe ILMerge.exe System.Compiler.dll</ILMergeCommand>
     </PropertyGroup>
 
     <Exec Command="$(ILMergeCommand)" WorkingDirectory="$(OutDir)" />
@@ -51,7 +52,7 @@
         <StrongName>StrongName</StrongName>
       </FilesToSign>
     </ItemGroup>
-    <Message Text="Files To Sign : @(FilesToSign, '%0a')" Importance="High"/>
+    <Message Text="Files To Sign : @(FilesToSign, '%0a')" Importance="High" />
   </Target>
 
 </Project>

@@ -2342,10 +2342,12 @@ namespace ILMerging {
           }
         }
         catch (AssemblyCouldNotBeSignedException ex) {
-          if (ex.Message == AssemblyCouldNotBeSignedException.DefaultMessage)
+          if (ex.Message == AssemblyCouldNotBeSignedException.DefaultMessage) {
             WriteToLog("ILMerge error: The target assembly was not able to be strongly named (did you forget to use the /delaysign option?).");
-          else
+            if (ex.InnerException != null) WriteToLog(ex.InnerException.Message);
+          } else {
             WriteToLog("ILMerge error: The target assembly was not able to be strongly named. " + ex.Message);
+          }
         }
       }
       #endregion
@@ -2433,6 +2435,8 @@ namespace ILMerging {
       #endregion
       #region Echo command line into log
       {
+        merger.WriteToLog("=============================================");
+        merger.WriteToLog("Timestamp (UTC): " + DateTime.UtcNow.ToString());
         System.Reflection.Assembly a = typeof(ILMerge).Assembly;
         merger.WriteToLog("ILMerge version " + a.GetName().Version.ToString());
         merger.WriteToLog("Copyright (C) Microsoft Corporation 2004-2006. All rights reserved.");

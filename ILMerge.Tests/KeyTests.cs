@@ -30,15 +30,16 @@ namespace ILMerging.Tests
         public void Sign_with_keyfile_should_not_throw_error()
         {
             using (var outputFile = TempFile.WithExtension(".dll"))
+            using (var logFile = TempFile.WithExtension(".log"))
             {
-                using (var logFile = TempFile.WithExtension(".log"))
-                {
-                    var ilMerge = new ILMerge {KeyFile = TestFiles.TestSnk, OutputFile = outputFile, LogFile = logFile};
-                    ilMerge.SetUpInputAssemblyForTest(Assembly.GetExecutingAssembly());
-                    ilMerge.Merge();
+                var ilMerge = new ILMerge { KeyFile = TestFiles.TestSnk, OutputFile = outputFile, LogFile = logFile };
+                ilMerge.SetUpInputAssemblyForTest(Assembly.GetExecutingAssembly());
+                ilMerge.Merge();
 
-                    Assert.IsFalse(File.ReadLines(logFile).Contains("ILMerge error: The target assembly was not able to be strongly named (did you forget to use the /delaysign option?)."),"There was an error in the log output from signing the assembly with a keyfile");
-                }
+                var errorLines = File.ReadLines(logFile).Where(line => 
+                    line.StartsWith("ILMerge error:", StringComparison.OrdinalIgnoreCase));
+
+                Assert.That(errorLines, Is.Empty);
             }
         }
 

@@ -22,7 +22,7 @@ namespace System.Compiler
         // ReSharper disable UnusedMember.Global – All preceding method declarations are needed
         // in order for StrongNameSignatureGeneration to end up at the right COM slot number.
 
-        [ComImport, ComConversionLoss, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("9FD93CCF-3280-4391-B3A9-96E1CDE77C8D")]
+        [ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("9FD93CCF-3280-4391-B3A9-96E1CDE77C8D")]
         private interface IClrStrongName
         {
             void GetHashFromAssemblyFile(

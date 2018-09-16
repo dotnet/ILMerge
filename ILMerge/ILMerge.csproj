@@ -23,7 +23,7 @@
     <NuspecProperties>configuration=$(Configuration);version=$(Version)</NuspecProperties>
     <!-- ignore warnings about the long description field. See https://github.com/NuGet/Home/issues/4587 -->
     <NoPackageAnalysis>true</NoPackageAnalysis>
-    <DelaySign>true</DelaySign>
+    <DelaySign>false</DelaySign>
   </PropertyGroup>
 
   <ItemGroup>

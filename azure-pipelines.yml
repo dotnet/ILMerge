@@ -20,6 +20,7 @@ steps:
   displayName: Install NBGV tool
   condition: and(succeeded(), eq(variables['system.pullrequest.isfork'], false))
 
+# NBGV uses by default the version number found in version.json in the same directory as this file.
 - script: nbgv cloud
   displayName: Set Version
   condition: and(succeeded(), eq(variables['system.pullrequest.isfork'], false))

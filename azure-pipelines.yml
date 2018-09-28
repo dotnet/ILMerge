@@ -42,3 +42,12 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+- powershell: |
+    mkdir $(Build.ArtifactStagingDirectory)\Packages     
+    $version = .\nbgv get-version -f json | ConvertFrom-Json
+    nuget pack ILMerge/ILMerge.nuspec -version "$($version.NuGetPackageVersion)" -BasePath "src" -NoPackageAnalysis -OutputDirectory $(Build.ArtifactStagingDirectory)\Packages -Properties "RepositoryType=git;RepositoryCommit=$($version.GitCommitId);RepositoryUrl=https://github.com/dotnet/ilmerge"
+  displayName: Create packages
+  condition: and(succeeded(), eq(variables['system.pullrequest.isfork'], false))
+
+  
+

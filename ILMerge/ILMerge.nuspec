@@ -7,7 +7,7 @@
     <language>en-US</language>
     <authors>mbarnett</authors>
     <owners>mbarnett</owners>
-    <copyright>Microsoft Corporation</copyright>
+    <copyright>.NET Foundation</copyright>
     <licenseUrl>https://github.com/dotnet/ILMerge/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/dotnet/ILMerge</projectUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>

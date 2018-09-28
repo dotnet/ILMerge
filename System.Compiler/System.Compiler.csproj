@@ -128,10 +128,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Common\Include\version.cs">
-      <Link>version.cs</Link>
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="AssemblyCache.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -281,6 +277,11 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Nerdbank.GitVersioning">
+      <Version>2.2.13</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

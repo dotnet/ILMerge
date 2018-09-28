@@ -29,6 +29,7 @@
   <ItemGroup>
     <ProjectReference Include="..\System.Compiler\System.Compiler.csproj" />
     <PackageReference Include="MicroBuild.Core" Version="0.2.0" PrivateAssets="all" />
+    <PackageReference Include="Nerdbank.GitVersioning" Version="2.2.13" />
   </ItemGroup>
 
   <Target Name="ILMergeConsoleApp" BeforeTargets="AfterBuild">

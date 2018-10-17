@@ -20,8 +20,8 @@ There are several options that control the behavior of ILMerge. See the document
     <repository type="git" url="https://github.com/dotnet/ILMerge" />
   </metadata>
   <files>
-    <file src="bin/$configuration$/net452/ILMerge.exe" target="tools/net452/ILMerge.exe" />
-    <file src="bin/$configuration$/net452/System.Compiler.dll" target="tools/net452/System.Compiler.dll" />
+    <file src="bin/Release/net452/ILMerge.exe" target="tools/net452/ILMerge.exe" />
+    <file src="bin/Release/net452/System.Compiler.dll" target="tools/net452/System.Compiler.dll" />
     <file src="build/ILMerge.props" target="build/" />
     <file src="../ILMerge.doc" target="docs/" />
   </files>

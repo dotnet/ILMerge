@@ -168,30 +168,6 @@
     <Compile Include="OpCode.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="PDBreaderWriter\BitAccess.cs" />
-    <Compile Include="PDBreaderWriter\BitSet.cs" />
-    <Compile Include="PDBreaderWriter\CvInfo.cs" />
-    <Compile Include="PDBreaderWriter\DataStream.cs" />
-    <Compile Include="PDBreaderWriter\DbiDbgHdr.cs" />
-    <Compile Include="PDBreaderWriter\DbiHeader.cs" />
-    <Compile Include="PDBreaderWriter\DbiModuleInfo.cs" />
-    <Compile Include="PDBreaderWriter\DbiSecCon.cs" />
-    <None Include="PDBreaderWriter\DumpMisc.cs" />
-    <Compile Include="PDBreaderWriter\IntHashTable.cs" />
-    <None Include="PDBreaderWriter\LineInfo.cs" />
-    <Compile Include="PDBreaderWriter\MsfDirectory.cs" />
-    <Compile Include="PDBreaderWriter\PdbDebugException.cs" />
-    <Compile Include="PDBreaderWriter\PdbException.cs" />
-    <Compile Include="PDBreaderWriter\PdbFile.cs" />
-    <Compile Include="PDBreaderWriter\PdbFileHeader.cs" />
-    <Compile Include="PDBreaderWriter\PdbFunction.cs" />
-    <Compile Include="PDBreaderWriter\PdbLine.cs" />
-    <Compile Include="PDBreaderWriter\PdbLines.cs" />
-    <Compile Include="PDBreaderWriter\PdbReader.cs" />
-    <Compile Include="PDBreaderWriter\PdbScope.cs" />
-    <Compile Include="PDBreaderWriter\PdbSlot.cs" />
-    <Compile Include="PDBreaderWriter\PdbSource.cs" />
-    <Compile Include="PDBreaderWriter\PdbWriter.cs" />
     <Compile Include="PDBreader\BitAccess.cs" />
     <Compile Include="PDBreader\BitSet.cs" />
     <Compile Include="PDBreader\CCIAdaptors.cs" />

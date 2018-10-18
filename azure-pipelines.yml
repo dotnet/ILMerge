@@ -62,7 +62,7 @@ steps:
     ArtifactDirectory: $(Build.ArtifactStagingDirectory)\Packages
   condition: and(succeeded(), not(eq(variables['build.reason'], 'PullRequest')), not(eq(variables['SignClientSecret'], '')), not(eq(variables['SignClientUser'], '')))
 
-  - task: PublishBuildArtifacts@1
+- task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: $(Build.ArtifactStagingDirectory)\Packages
     ArtifactName: nugetpackage

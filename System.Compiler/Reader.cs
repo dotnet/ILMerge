@@ -1,3 +1,7 @@
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information. 
+
 using System;
 using System.Collections;
 #if FxCop
@@ -28,10 +32,6 @@ using Event = Microsoft.Cci.EventNode;
 using Return = Microsoft.Cci.ReturnNode;
 using Throw = Microsoft.Cci.ThrowNode;
 #endif
-#if UseSingularityPDB
-using Microsoft.Singularity.PdbInfo;
-using Microsoft.Singularity.PdbInfo.Features;
-#endif
 #if CCINamespace
 using Microsoft.Cci;
 #else
@@ -50,7 +50,7 @@ namespace Microsoft.Cci.Metadata{
 namespace System.Compiler.Metadata{
 #endif
 
-#if !ROTOR && !UseSingularityPDB
+#if !ROTOR
   enum CorOpenFlags : uint{
     ofRead      =   0x00000000,     // Open scope for read
     ofWrite     =   0x00000001,     // Open scope for write.
@@ -196,9 +196,7 @@ namespace System.Compiler.Metadata{
 #if CodeContracts
     internal PdbInfo pdbInfo;
 #endif
-#if UseSingularityPDB
-    internal PdbFunction[] pdbFunctions;
-#elif !ROTOR
+#if !ROTOR
     internal ISymUnmanagedReader debugReader;
     private System.Collections.Generic.Dictionary<IntPtr,UnmanagedDocument> debugDocuments;
 #endif
@@ -255,7 +253,7 @@ namespace System.Compiler.Metadata{
       if (this.tables != null)
         this.tables.Dispose();
       //this.tables = null;
-#if !ROTOR && !UseSingularityPDB
+#if !ROTOR
       if (this.debugReader != null)
         Marshal.ReleaseComObject(this.debugReader);
       this.debugReader = null;
@@ -327,18 +325,7 @@ namespace System.Compiler.Metadata{
         }
       }
 #endif
-#if UseSingularityPDB
-      string pdbFileName = BetterPath.ChangeExtension(filename, "pdb");
-      this.getDebugSymbolsFailed = true;
-      //TODO: use search path
-      if (System.IO.File.Exists(pdbFileName)) {
-        using (System.IO.FileStream inputStream = new System.IO.FileStream(pdbFileName,
-                 System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read)) {
-          this.pdbFunctions = PdbFile.LoadFunctions(inputStream, true);
-          this.getDebugSymbolsFailed = false;
-        }
-      }
-#elif !ROTOR
+#if !ROTOR
       if (filename == null) return;
       CorSymBinder binderObj1 = null;
       CorSymBinder2 binderObj2 = null;
@@ -536,10 +523,7 @@ namespace System.Compiler.Metadata{
               return null;
             }
             if (cachedAssembly.reader != this && cachedAssembly.reader != null) {
-#if UseSingularityPDB
-              if (this.getDebugSymbols && cachedAssembly.reader.pdbFunctions == null && !cachedAssembly.reader.getDebugSymbolsFailed)
-                cachedAssembly.SetupDebugReader(null);
-#elif !ROTOR
+#if !ROTOR
               if (this.getDebugSymbols && cachedAssembly.reader.debugReader == null && !cachedAssembly.reader.getDebugSymbolsFailed)
                 cachedAssembly.SetupDebugReader(null);
 #endif
@@ -2251,7 +2235,7 @@ namespace System.Compiler.Metadata{
         locals.Add(loc);
       }
     }
-#if !ROTOR && !UseSingularityPDB
+#if !ROTOR
     internal void GetLocalSourceNames(ISymUnmanagedScope/*!*/ scope, System.Collections.Generic.Dictionary<int,LocalInfo>/*!*/ localSourceNames) {
       uint numLocals = scope.GetLocalCount();
       IntPtr[] localPtrs = new IntPtr[numLocals];
@@ -2398,11 +2382,7 @@ namespace System.Compiler.Metadata{
     private void GetMethodDebugSymbols(Method/*!*/ method, uint methodToken)
       //^ requires this.debugReader != null;
     {
-#if UseSingularityPDB
-      PdbFunction pdbFunc = this.GetPdbFunction(methodToken);
-      if (pdbFunc != null)
-        method.RecordSequencePoints(pdbFunc);
-#elif !ROTOR
+#if !ROTOR
       ISymUnmanagedMethod methodInfo = null;
       try{
         try{
@@ -2418,23 +2398,6 @@ namespace System.Compiler.Metadata{
       }
 #endif
     }
-#if UseSingularityPDB
-    internal PdbFunction GetPdbFunction(uint methodToken) {
-      PdbFunction[] pdbFunctions = this.pdbFunctions;
-      int i = 0, n = pdbFunctions == null ? 0 : pdbFunctions.Length, j = n-1;
-      while (i < j) {
-        int k = (i+j) / 2;
-        if (pdbFunctions[k].token < methodToken)
-          i = k+1;
-        else
-          j = k;
-      }
-      while (i > 0 && pdbFunctions[i-1].token == methodToken) i--;
-      if (0 <= i && i < n && pdbFunctions[i].token == methodToken)
-        return pdbFunctions[i];
-      return null;
-    }
-#endif
     private void GetMethodInstructions(Method/*!*/ method, object/*!*/ i) {
       TypeNodeList savedCurrentMethodTypeParameters = this.currentMethodTypeParameters;
       this.currentMethodTypeParameters = method.templateParameters;
@@ -4252,13 +4215,7 @@ namespace System.Compiler.Metadata{
           this.ParseExceptionHandlerEntry((header & 0x40) == 0);
         }
         var localSourceNames = new System.Collections.Generic.Dictionary<int,LocalInfo>();
-#if UseSingularityPDB
-        if (this.reader.getDebugSymbols && this.reader.pdbFunctions != null) {
-          PdbFunction pdbFunc = this.reader.GetPdbFunction(0x6000000|(uint)methodIndex);
-          if (pdbFunc != null)
-            this.GetLocalNames(pdbFunc.scopes, localSourceNames);
-        }
-#elif !ROTOR
+#if !ROTOR
         if (this.reader.getDebugSymbols && this.reader.debugReader != null){
           ISymUnmanagedMethod methodInfo = null;
           try{
@@ -4293,17 +4250,6 @@ namespace System.Compiler.Metadata{
         this.reader.GetLocals(localIndex, this.locals, localSourceNames);
       }
     }
-
-#if UseSingularityPDB
-    private void GetLocalNames(PdbScope[] scopes, Hashtable localSourceNames) {
-      for (int i = 0, n = scopes == null ? 0 : scopes.Length; i < n; i++) {
-        PdbScope scope = scopes[i];
-        foreach (PdbSlot slot in scope.slots)
-          localSourceNames[(int)slot.slot] = slot.name;
-        this.GetLocalNames(scope.scopes, localSourceNames);
-      }
-    }
-#endif
 
 
     abstract protected void ParseExceptionHandlerEntry(bool smallSection);

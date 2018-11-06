@@ -1,3 +1,7 @@
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information. 
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -28,9 +32,6 @@ using Property = Microsoft.Cci.PropertyNode;
 using Event = Microsoft.Cci.EventNode;
 using Return = Microsoft.Cci.ReturnNode;
 using Throw = Microsoft.Cci.ThrowNode;
-#endif
-#if UseSingularityPDB
-using Microsoft.Singularity.PdbInfo;
 #endif
 #if CCINamespace
 using Cci = Microsoft.Cci;
@@ -725,26 +726,7 @@ namespace System.Compiler{
     public override int GetLine (int offset) { return offset == 0 ? this.startLine : this.endLine; }
   }
 #endif
-#if UseSingularityPDB
-  internal class PdbDocument : Document {
-    internal PdbDocument(PdbLines lines) {
-      this.Name = lines.file.name;
-      this.lines = lines;
-    }
-    PdbLines lines;
-    public override int GetColumn(int position) {
-      PdbLine line = this.lines.lines[position/2];
-      if (position%2 == 0)
-        return line.colBegin;
-      else
-        return line.colEnd;
-    }
-    public override int GetLine(int position) {
-      PdbLine line = this.lines.lines[position/2];
-      return (int)line.line;
-    }
-  }
-#elif !ROTOR
+#if !ROTOR
   internal class UnmanagedDocument: Document{
     private UnmanagedDocument(IntPtr ptrToISymUnmanagedDocument){
       //^ base();
@@ -955,9 +937,7 @@ namespace System.Compiler{
     public int EndLine{
       get{ 
 #if !CodeContracts
-#if UseSingularityPDB
-        if (this.Document == null || (this.Document.Text == null && !(this.Document is PdbDocument))) return 0;
-#elif !ROTOR
+#if !ROTOR
         if (this.Document == null || (this.Document.Text == null && !(this.Document is UnmanagedDocument))) return 0;
 #else
         if (this.Document == null || this.Document.Text == null) return 0;
@@ -975,9 +955,7 @@ namespace System.Compiler{
     public int EndColumn{
       get{ 
 #if !CodeContracts
-#if UseSingularityPDB
-        if (this.Document == null || (this.Document.Text == null && !(this.Document is PdbDocument))) return 0;
-#elif !ROTOR
+#if !ROTOR
         if (this.Document == null || (this.Document.Text == null && !(this.Document is UnmanagedDocument))) return 0;
 #else
         if (this.Document == null || this.Document.Text == null) return 0;
@@ -18626,22 +18604,7 @@ namespace System.Compiler{
       }
       return true;
     }
-#if UseSingularityPDB
-    internal TrivialHashtable contextForOffset;
-    internal void RecordSequencePoints(PdbFunction methodInfo) {
-      if (methodInfo == null || this.contextForOffset != null) return;
-      this.contextForOffset = new TrivialHashtable();
-      for (int i = 0, n = methodInfo.lines == null ? 0 : methodInfo.lines.Length; i < n; i++) {
-        PdbLines lines = methodInfo.lines[i];
-        PdbDocument doc = new PdbDocument(lines);
-        for (int j = 0, m = lines.lines.Length; j < m; j++) {
-          PdbLine line = lines.lines[j];
-          if (line.line != 0xfeefee)
-            this.contextForOffset[(int)line.offset+1] = new SourceContext(doc, j*2, j*2+1 );
-        }
-      }
-    }
-#elif !ROTOR
+#if !ROTOR
     internal TrivialHashtable contextForOffset;
     internal void RecordSequencePoints(ISymUnmanagedMethod methodInfo, System.Collections.Generic.Dictionary<IntPtr,UnmanagedDocument> documentCache){
       if (methodInfo == null || this.contextForOffset != null) return;

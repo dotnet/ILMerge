@@ -4,7 +4,7 @@
 # https://docs.microsoft.com/vsts/pipelines/apps/windows/dot-net
 
 trigger:
-- azure-pipelines
+- master
 
 pool:
   vmImage: 'VS2017-Win2016'

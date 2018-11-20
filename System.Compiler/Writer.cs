@@ -5366,7 +5366,7 @@ namespace System.Compiler{
         }
         try
         {
-          assem.PublicKeyOrToken = Writer.GetPublicKey(assem);
+          assem.PublicKeyOrToken = Writer.GetPublicKey(assem, delaySign);
         }
         catch (ArgumentException ex)
         {
@@ -5393,10 +5393,21 @@ namespace System.Compiler{
         }
       }
     }
-    private static byte[] GetPublicKey(AssemblyNode/*!*/ assem) {
+    private static byte[] GetPublicKey(AssemblyNode/*!*/ assem, bool delaySign) {
       Debug.Assert(assem != null);
-      if (assem.KeyContainerName != null) return new Reflection.StrongNameKeyPair(assem.KeyContainerName).PublicKey;
-      if (assem.KeyBlob != null) return new Reflection.StrongNameKeyPair(assem.KeyBlob).PublicKey;
+      if (assem.KeyContainerName != null) {
+        return new Reflection.StrongNameKeyPair(assem.KeyContainerName).PublicKey;
+      }
+      if (assem.KeyBlob != null) {
+        try {
+          return new Reflection.StrongNameKeyPair(assem.KeyBlob).PublicKey;
+        } catch {
+          if (delaySign)
+            return assem.KeyBlob;
+          else
+            throw;
+        }
+      }
       return assem.PublicKeyOrToken;
     }
 

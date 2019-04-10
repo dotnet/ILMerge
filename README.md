@@ -34,6 +34,26 @@ Currently, ILMerge works only on Windows-based platforms. It does not yet suppor
 If you use ASP.NET v2.0, then it provides a tool (based on ILMerge) to combine assemblies created during precompilation.
 You can get more details from the [ASP.NET web site](http://msdn.microsoft.com/en-us/library/bb397866.aspx).
 
+## Installation
+
+As noted on the [ilmerge NuGet page](https://www.nuget.org/packages/ilmerge), the package can be installed from the Visual Studio environment. Expand the project container in the `Solution Explorer` view. Right click on `references` and select `Manage NuGet Packages`
+
+![NuGet References Setting](images/NuGet_references_setting.png)
+
+Ensure the `Package source` is set to `nuget.org`
+
+![NuGet Package source](images/NuGet_Package_source.png)
+
+Next, click on Tools - NuGet Package Manager - Package Manager Console. Ensure the `Package source` is also set to `nuget.org` 
+
+![NuGet Pakage Manager Console source.PNG](images/NuGet_Package_Manager_Console_source.png)
+
+To install for the project, use the Install-Package command:
+
+```
+Install-Package ilmerge -Version 3.0.21
+```
+
 ## Usage
 
 ### MSBuild

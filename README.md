@@ -38,7 +38,7 @@ You can get more details from the [ASP.NET web site](http://msdn.microsoft.com/e
 
 As noted on the [ilmerge NuGet page](https://www.nuget.org/packages/ilmerge), the pacakge can be installed from the Visual Studio environment. Expand the project container in the `Solution Explorer` view. Right click on `references` and select `Manage NuGet Packages`
 
-![NuGet References Setting](blob/master/images/NuGet_references_setting.png)
+![NuGet References Setting](images/NuGet_references_setting.png)
 
 Ensure the `Package source` is set to `nuget.org`
 

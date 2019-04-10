@@ -55,6 +55,41 @@ ILMerge can be used in MSBuild using the NuGet package:
 </Project>
 ```
 
+Edit the project `.csproj` or `.vbproj` files (inside the respective `<Project> .. </Project>` tags, typically at the end of the file. If compiling for a specific target, use explicit directories such as `Bin\x64\Release`:
+
+
+```
+<ItemGroup>
+    <PackageReference Include="ILMerge" Version="2.15.0" />
+  </ItemGroup>
+
+  <Target Name="ILMerge">
+    <!-- the ILMergePath property points to the location of ILMerge.exe console application -->
+    <Exec Command="$(ILMergeConsolePath) Bin\x64\Release\myapp.exe  /out:myapp.exe Bin\x64\Release\File1.dll Bin\x64\Release\File2.dll Bin\x64\Release\File3.dll " />
+  </Target>
+```
+Although whitespace is usually ignored in XML files, in this case the exact text is processed as a DOS command, so to improve readability, use the carat `^` (shift 6) line extenders:
+
+```
+<ItemGroup>
+    <PackageReference Include="ILMerge" Version="2.15.0" />
+  </ItemGroup>
+
+  <Target Name="ILMerge">
+    <!-- the ILMergePath property points to the location of ILMerge.exe console application -->
+    <Exec Command="$(ILMergeConsolePath) Bin\x64\Release\myapp.exe ^
+    /out:myapp.exe ^
+    Bin\x64\Release\File1.dll ^
+    Bin\x64\Release\File2.dll ^ 
+    Bin\x64\Release\File3.dll " />
+  </Target>
+```
+
+The DOS dir /b option can be helpful in listing all of the dependencies:
+```
+dir bin\x64\Debug\*.dll /b
+```
+
 From Visual Studio Developer Command Prompt:
 ```ps1
 # Download/install the package reference
@@ -63,4 +98,49 @@ msbuild /t:Restore
 # Run the ILMerge target
 msbuild /t:ILMerge
 ```
+
+### To run `ILMerge` in a batch file:
+
+The Visual Studio Developer Command Prompt is not needed here, as `msbuild` is not used.
+
+```
+@echo off
+
+:: this script needs https://www.nuget.org/packages/ilmerge
+
+:: set your target executable name (typically [projectname].exe)
+SET APP_NAME=myapp.exe
+
+:: Set build, used for directory. Typically Release or Debug
+SET ILMERGE_BUILD=Debug
+
+:: Set platform, typically x64
+SET ILMERGE_PLATFORM=x64
+
+:: set your NuGet ILMerge Version, this is the number from the package manager install, for example:
+:: PM> Install-Package ilmerge -Version 3.0.21
+:: to confirm it is installed for a given project, see the packages.config file
+SET ILMERGE_VERSION=3.0.21
+
+:: the full ILMerge should be found here:
+SET ILMERGE_PATH=%USERPROFILE%\.nuget\packages\ilmerge\%ILMERGE_VERSION%\tools\net452
+:: dir "%ILMERGE_PATH%"\ILMerge.exe
+
+echo Merging %APP_NAME% ...
+
+:: add project DLL's starting with replacing the FirstLib with this project's DLL
+"%ILMERGE_PATH%"\ILMerge.exe Bin\x64\Release\%APP_NAME%  ^
+  /lib:Bin\%ILMERGE_PLATFORM%\%ILMERGE_BUILD%\ ^
+  /out:%APP_NAME% ^
+  FirstLib.dll ^
+  mylib1.dll ^
+  Microsoft.lib2.dll ^
+  SomeOtherLib.dll ^
+  \otherlibdir\otherlib.dll 
+
+
+:Done
+dir %APP_NAME%
+```
+
 

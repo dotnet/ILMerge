@@ -46,7 +46,7 @@ Ensure the `Package source` is set to `nuget.org`
 
 Next, click on Tools - NuGet Package Manager - Package Manager Console. Ensure the `Package source` is also set to `nuget.org` 
 
-![NuGet Pakage Manager Console source.PNG](NuGet_Pakage_Manager_Console_source.png)
+![NuGet Pakage Manager Console source.PNG](images/NuGet_Package_Manager_Console_source.png)
 
 To install for the project, use the Install-Package command:
 

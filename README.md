@@ -21,7 +21,7 @@ But all of its functionality is also available programmatically.
 There are several options that control the behavior of ILMerge.
 See the documentation that comes with the tool for details.
 
-The current version is 2.14.1208 (created on 8 December 2014).
+The current version is 3.0.29 (released on 10 April 2019).
 NOTE: There is no longer a version of ILMerge that runs in the v1.1 runtime.
 
 ILMerge runs in the v4.0 .NET Runtime,
@@ -51,7 +51,7 @@ Next, click on Tools - NuGet Package Manager - Package Manager Console. Ensure t
 To install for the project, use the Install-Package command:
 
 ```
-Install-Package ilmerge -Version 3.0.21
+Install-Package ilmerge -Version 3.0.29
 ```
 
 ## Usage
@@ -64,7 +64,7 @@ ILMerge can be used in MSBuild using the NuGet package:
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <PackageReference Include="ILMerge" Version="2.15.0" />
+    <PackageReference Include="ILMerge" Version="3.0.29" />
   </ItemGroup>
 
   <Target Name="ILMerge">
@@ -80,7 +80,7 @@ Edit the project `.csproj` or `.vbproj` files (inside the respective `<Project> 
 
 ```
 <ItemGroup>
-    <PackageReference Include="ILMerge" Version="2.15.0" />
+    <PackageReference Include="ILMerge" Version="3.0.29" />
   </ItemGroup>
 
   <Target Name="ILMerge">
@@ -92,7 +92,7 @@ Although whitespace is usually ignored in XML files, in this case the exact text
 
 ```
 <ItemGroup>
-    <PackageReference Include="ILMerge" Version="2.15.0" />
+    <PackageReference Include="ILMerge" Version="3.0.29" />
   </ItemGroup>
 
   <Target Name="ILMerge">
@@ -138,9 +138,9 @@ SET ILMERGE_BUILD=Debug
 SET ILMERGE_PLATFORM=x64
 
 :: set your NuGet ILMerge Version, this is the number from the package manager install, for example:
-:: PM> Install-Package ilmerge -Version 3.0.21
+:: PM> Install-Package ilmerge -Version 3.0.29
 :: to confirm it is installed for a given project, see the packages.config file
-SET ILMERGE_VERSION=3.0.21
+SET ILMERGE_VERSION=3.0.29
 
 :: the full ILMerge should be found here:
 SET ILMERGE_PATH=%USERPROFILE%\.nuget\packages\ilmerge\%ILMERGE_VERSION%\tools\net452

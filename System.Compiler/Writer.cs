@@ -5470,8 +5470,8 @@ namespace System.Compiler{
         indexHeap.Write(cursor.ReadUInt16()); //bit count
         int len = cursor.ReadInt32();
         int offset = cursor.ReadInt32();
-        indexHeap.Write((int)len);
-        indexHeap.Write((int)module.Win32Resources.Count+2);
+        indexHeap.Write((uint)len);
+        indexHeap.Write((ushort)(module.Win32Resources.Count+2));
         MemoryCursor c = new MemoryCursor(cursor);
         c.Position = offset;
         resource.Data = c.ReadBytes(len);

@@ -149,7 +149,7 @@ SET ILMERGE_PATH=%USERPROFILE%\.nuget\packages\ilmerge\%ILMERGE_VERSION%\tools\n
 echo Merging %APP_NAME% ...
 
 :: add project DLL's starting with replacing the FirstLib with this project's DLL
-"%ILMERGE_PATH%"\ILMerge.exe Bin\x64\Release\%APP_NAME%  ^
+"%ILMERGE_PATH%"\ILMerge.exe Bin\%ILMERGE_PLATFORM%\%ILMERGE_BUILD%\%APP_NAME%  ^
   /lib:Bin\%ILMERGE_PLATFORM%\%ILMERGE_BUILD%\ ^
   /out:%APP_NAME% ^
   FirstLib.dll ^

@@ -2754,7 +2754,8 @@ namespace System.Compiler{
           }
           this.methodBodyHeap.Write((int)this.GetFieldToken((Field)mb.BoundMember));
           return;
-        case NodeType.Parameter: 
+        case NodeType.Parameter:
+        case NodeType.This:
 #if !MinimalReader
           ParameterBinding pb = operand as ParameterBinding;
           if (pb != null) operand = pb.BoundParameter;

@@ -789,16 +789,27 @@ namespace ILMerging {
 
       return addAttribute;
     }
-
+    private static bool IsPortablePdb(string pdb) {
+      using (var stream = File.OpenRead(pdb)) {
+        const uint ppdb_signature = 0x424a5342;
+        var position = stream.Position;
+        try {
+          var reader = new BinaryReader(stream);
+          return reader.ReadUInt32() == ppdb_signature;
+        } finally {
+          stream.Position = position;
+        }
+      }
+    }   
     #endregion
     #region Protected Methods
-    /// <summary>
-    /// Provides a way for subtypes to create their own Duplicator to use for
-    /// the merging. When not overridden, the duplicator is the standard one.
-    /// </summary>
-    /// <param name="module">Top level module for this duplicator to copy types into.</param>
-    /// <returns>The duplicator to use for visiting the source modules.</returns>
-    protected virtual Duplicator CreateDuplicator(Module module) {
+        /// <summary>
+        /// Provides a way for subtypes to create their own Duplicator to use for
+        /// the merging. When not overridden, the duplicator is the standard one.
+        /// </summary>
+        /// <param name="module">Top level module for this duplicator to copy types into.</param>
+        /// <returns>The duplicator to use for visiting the source modules.</returns>
+        protected virtual Duplicator CreateDuplicator(Module module) {
       return new Duplicator(module, null);
     }
     /// <summary>
@@ -1880,6 +1891,13 @@ namespace ILMerging {
                 WriteToLog("Can not find PDB file. Debug info will not be available for assembly '{0}'.",
                   (string)assemblyNames[i]);
                 tempDebugInfo = false;
+              } else
+              {
+                if (IsPortablePdb(pdbFullName))
+                {
+                  WriteToLog("Can not use portable PDB file. Debug info will not be available for assembly '{0}'.", (string)assemblyNames[i]);
+                  tempDebugInfo = false;
+                }
               }
             }
             AssemblyNode a;
